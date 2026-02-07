@@ -22,6 +22,8 @@ def build_words(words):
 
 
 class ProbabilityTrainer:
+    """Trains a very simple Naive-Bayes-style token probability model for spam vs ham.+"""
+
     def __init__(self, stoplist, infile):
         self.sfile = stoplist
         self.tfile = infile
@@ -34,11 +36,13 @@ class ProbabilityTrainer:
 
 
     def read_stoplist(self):
+        """Load stop words into a set for fast checks"""
         with open(self.sfile, "r", encoding="unicode-escape") as f:
             self.filtered = set(f.read().splitlines())
 
 
     def compute_probs(self):
+        """raw counts into conditional probabilities"""
         for token in self.word_count:
             ham_occ = self.word_count[token][0]
             spam_occ = self.word_count[token][1]
@@ -48,6 +52,7 @@ class ProbabilityTrainer:
 
 
     def run_training(self):
+        """Read training file, update counts for each token by class, then compute smoothed probabilities"""
         with open(self.tfile, "r", encoding="unicode-escape") as f:
             for line in f:
                 line = line.strip()
@@ -77,6 +82,7 @@ class ProbabilityTrainer:
 
 
     def export_model(self):
+        """Write probability table and class totals"""
         os.makedirs("Model", exist_ok=True)
         with open("Model/Vocab.json", "w") as f:
             json.dump(self.final_probs, f, indent=4)
