@@ -15,6 +15,8 @@ def clean_msg(txt):
 
 
 class SpamPredictor:
+    """Loads a trained word-probability dictionary and evaluates spam/ham predictions
+    on a test set across different cutoff thresholds"""
     def __init__(self, vocab_path, count_path, stops_path, testdata):
         self.vocab_path = vocab_path
         self.count_path = count_path
@@ -27,6 +29,7 @@ class SpamPredictor:
 
 
     def load_all(self):
+        """Load model vocabulary, class counts, and stop words"""
         with open(self.vocab_path, "r") as f:
             self.dictionary = json.load(f)
         with open(self.count_path, "r") as f:
@@ -37,6 +40,7 @@ class SpamPredictor:
             self.stoplist = set(f.read().splitlines())
 
     def eval_with_cut(self, threshold):
+        """Evaluate model on the test set using a cutoff threshold"""
         TN = FP = FN = TP = 0
         total_messages = self.total_spam + self.total_ham
     
