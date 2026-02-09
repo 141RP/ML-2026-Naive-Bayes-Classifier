@@ -16,5 +16,5 @@ how performance metrics and confusion matrix rates change with threshold tuning.
 
 ## Run
 ```bash
-python patel_rohin_Train.py
-python patel_rohin_Predict.py
+python train.py
+python predict.py
